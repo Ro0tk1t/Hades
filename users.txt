@@ -1,0 +1,10 @@
+root
+admin
+administrator
+user
+test
+ubuntu
+sa
+super
+Admin
+master
