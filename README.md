@@ -1,4 +1,4 @@
-# hades
+# Hades
 (a multi service & application password crack tool)
 
 ## 开发环境
