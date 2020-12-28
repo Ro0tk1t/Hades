@@ -2,15 +2,16 @@ package task
 
 import (
     "github.com/urfave/cli/v2"
-    . "hades/utils"
-    "hades/conf"
-    "hades/models"
-    "hades/plugins"
     "context"
     "strings"
     "time"
     "sync"
     "log"
+
+    "hades/conf"
+    "hades/models"
+    "hades/plugins"
+    . "hades/utils"
 )
 
 var m = sync.Mutex{}

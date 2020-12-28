@@ -17,7 +17,7 @@ $ ./hades -I '127.0.0.1:23' -t 10 -T 100 --user_file /tmp/users --pass_file /tmp
 
 ### 或者直接使用：
 ```bash
-$ go build --help
+$ go run hades.go --help
 $ go run hades.go -I '127.0.0.1:23' -t 10 -T 100 --user_file /tmp/users --pass_file /tmp/pass scan
 ```
 
