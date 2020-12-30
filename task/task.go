@@ -1,7 +1,6 @@
 package task
 
 import (
-    "github.com/urfave/cli/v2"
     "context"
     "strings"
     "time"
@@ -12,11 +11,13 @@ import (
     "hades/models"
     "hades/plugins"
     . "hades/utils"
+
+    "github.com/spf13/cobra"
 )
 
 var m = sync.Mutex{}
 
-func Scan(ctx *cli.Context)(err error){
+func Scan(ctx *cobra.Command, args []string)(err error){
     if ctx.IsSet("debug"){
         conf.Debug = ctx.Bool("debug")
     }

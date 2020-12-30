@@ -26,3 +26,16 @@ var Flags = []cli.Flag{
     &cli.StringFlag{Name: "pass_file", Aliases: []string{"p"}, Value: "pass.txt", Usage: "password file"},
     &cli.StringFlag{Name: "output", Aliases: []string{"o"}, Usage: "result output file"},
 }
+
+var (
+    rCmd = &cobra.Command{
+        Use: "hades",
+        Short: "A password cracker tool",
+        Long: "Hades is a password cracker tool, it support DIY your own plugin 2 extend the capblility."
+        Run: task.Scan,
+    }
+)
+
+func Execute() error {
+    return rCmd.Execute()
+}
