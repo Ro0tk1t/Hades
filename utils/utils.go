@@ -1,8 +1,6 @@
 package utils
 
 import (
-    "hades/models"
-    "hades/conf"
     "encoding/json"
     "net/url"
     "strconv"
@@ -11,8 +9,12 @@ import (
     "sync"
     "fmt"
     "net"
-    "log"
     "os"
+
+    "hades/models"
+    "hades/conf"
+
+    log "github.com/sirupsen/logrus"
 )
 
 var m sync.Mutex
@@ -32,7 +34,7 @@ func SplitIP(line string){
                 target := models.Target{IP: ip, Port: port, Protocol: protocol}
                 conf.IPs = append(conf.IPs, target)
             } else {
-                log.Printf("Not Support %v, ignore: %v:%v", protocol, ip, port)
+                log.Warn("Not Support %v, ignore: %v:%v", protocol, ip, port)
             }
         } else {
             port, err := strconv.Atoi(portProtocol[0])
@@ -60,7 +62,7 @@ func SplitIP(line string){
         target := models.Target{IP: ip, Port: port, Protocol: protocol, URL: fmt.Sprintf("%v", URL)}
         conf.IPs = append(conf.IPs, target)
     } else {
-        log.Printf("Not Support %v, ignore: %v:%v", protocol, ip, port)
+        log.Warn("Not Support %v, ignore: %v:%v", protocol, ip, port)
     }
 
 }
@@ -69,7 +71,7 @@ func SplitIP(line string){
 func GetIPs(fn string){
     fd, err := os.Open(fn)
     if err != nil{
-        log.Println(err)
+        log.Error(err)
         return
     }
     defer fd.Close()
@@ -91,7 +93,7 @@ func GetFileData(fn string) []string{
     var datas []string
     fd, err := os.Open(fn)
     if err != nil{
-        log.Println(err)
+        log.Error(err)
         return datas
     }
     defer fd.Close()
@@ -109,7 +111,7 @@ func GetFileData(fn string) []string{
 
 
 func CheckAlive(targets []models.Target){
-    log.Printf("checking alived target")
+    log.Info("checking alived target")
     wg := sync.WaitGroup{}
     wg.Add(len(targets))
     for _, target := range targets{
@@ -140,7 +142,7 @@ func Check(target models.Target){
     if alive{
         m.Lock()
         conf.AliveTarget = append(conf.AliveTarget, target)
-        log.Println("found alived: ", target)
+        log.Info("found alived: ", target)
         m.Unlock()
     }
 }
@@ -153,8 +155,7 @@ func WriteResults(){
     } else {
         if conf.Output == ""{
             fmt.Println("")
-            log.Println("Results is:")
-            fmt.Println(string(results))
+            log.Warn("Results is:", string(results))
         } else {
             fd, err := os.OpenFile(conf.Output, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
             defer fd.Close()

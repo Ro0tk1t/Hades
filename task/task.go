@@ -1,17 +1,18 @@
 package task
 
 import (
-    "github.com/urfave/cli/v2"
-    "context"
-    "strings"
     "time"
     "sync"
-    "log"
+    "context"
+    "strings"
 
     "hades/conf"
     "hades/models"
     "hades/plugins"
     . "hades/utils"
+
+    "github.com/urfave/cli/v2"
+    log "github.com/sirupsen/logrus"
 )
 
 var m = sync.Mutex{}
@@ -65,7 +66,7 @@ func CheckPass(){
 
 
 func Brute(target models.Target, wgi *sync.WaitGroup){
-    log.Println("start 2 brute force  ", target)
+    log.Info("start 2 brute force  ", target)
     wgt := sync.WaitGroup{}
     ch := make(chan struct{}, conf.Threads)
     right := false
@@ -76,7 +77,7 @@ func Brute(target models.Target, wgi *sync.WaitGroup){
         for _, pass := range conf.Pass{
             select {
                 case <- ctx.Done():
-                    log.Println("stop brute force  ", target)
+                    log.Info("stop brute force  ", target)
                     wgt.Done()
                 default:
                     ch <- struct{}{}
@@ -89,7 +90,7 @@ func Brute(target models.Target, wgi *sync.WaitGroup){
             for _, pass := range conf.Pass{
                 select {
                     case <- ctx.Done():
-                        log.Println("stop brute force  ", target)
+                        log.Info("stop brute force  ", target)
                         wgt.Done()
                     default:
                         ch <- struct{}{}
@@ -122,7 +123,7 @@ func BruteForce(ctx context.Context, cancel context.CancelFunc, wgt *sync.WaitGr
                 if conf.Quit{
                     defer cancel()
                 }
-                log.Printf("found user: %v, pass: %v @ %v", user, pass, target)
+                log.Warn("found user: %v, pass: %v @ %v", user, pass, target)
                 *right = true
             }
             ch0 <- struct{}{}

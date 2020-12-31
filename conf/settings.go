@@ -2,8 +2,12 @@ package conf
 
 import (
     "hades/models"
+
     "strings"
     "time"
+
+    log "github.com/sirupsen/logrus"
+    nested "github.com/antonfisher/nested-logrus-formatter"
 )
 
 
@@ -49,6 +53,11 @@ var (
 )
 
 func init(){
+    log.SetFormatter(&nested.Formatter{
+        HideKeys:    true,
+        FieldsOrder: []string{"component", "category"},
+    })
+
     SupportProto = make(map[string]bool)
     for _, proto := range PortService{
         SupportProto[strings.ToUpper(proto)] = true
