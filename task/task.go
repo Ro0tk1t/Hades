@@ -123,7 +123,7 @@ func BruteForce(ctx context.Context, cancel context.CancelFunc, wgt *sync.WaitGr
                 if conf.Quit{
                     defer cancel()
                 }
-                log.Warn("found user: %v, pass: %v @ %v", user, pass, target)
+                log.Warnf("found user: %v, pass: %v @ %v", user, pass, target)
                 *right = true
             }
             ch0 <- struct{}{}

@@ -34,7 +34,7 @@ func SplitIP(line string){
                 target := models.Target{IP: ip, Port: port, Protocol: protocol}
                 conf.IPs = append(conf.IPs, target)
             } else {
-                log.Warn("Not Support %v, ignore: %v:%v", protocol, ip, port)
+                log.Warnf("Not Support %v, ignore: %v:%v", protocol, ip, port)
             }
         } else {
             port, err := strconv.Atoi(portProtocol[0])
@@ -62,7 +62,7 @@ func SplitIP(line string){
         target := models.Target{IP: ip, Port: port, Protocol: protocol, URL: fmt.Sprintf("%v", URL)}
         conf.IPs = append(conf.IPs, target)
     } else {
-        log.Warn("Not Support %v, ignore: %v:%v", protocol, ip, port)
+        log.Warnf("Not Support %v, ignore: %v:%v", protocol, ip, port)
     }
 
 }
@@ -155,7 +155,7 @@ func WriteResults(){
     } else {
         if conf.Output == ""{
             fmt.Println("")
-            log.Warn("Results is:", string(results))
+            log.Warn("Results is: ", string(results))
         } else {
             fd, err := os.OpenFile(conf.Output, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
             defer fd.Close()
